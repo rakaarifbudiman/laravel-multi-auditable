@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Traits;
+
+use Illuminate\Support\Facades\Auth;
+use App\Models\Project\MiaAuditProject;
+
+trait DummyTrait
+{
+    public static function bootDummyTrait()
+    {
+        static::updating(function ($model) {
+            $dirty = $model->getDirty();
+            foreach ($dirty as $field => $newValue) {
+                // Ignore changes in fields that are in the ignoreChangeLog array
+                if (in_array($field, $model->ignoreChangeLog ?? [])) {
+                    continue;
+                }
+                $oldValue = $model->getOriginal($field);
+
+                // Compare only the date part if the attribute is a date or timestamp
+                if ($model->isDateAttribute($field) || $model->isTimestampAttribute($field)) {
+                    $oldValue = $model->formatDateForComparison($oldValue);
+                    $newValue = $model->formatDateForComparison($newValue);
+                }
+
+                // Ignore changes if the old and new values are the same
+                if ($oldValue == $newValue) {
+                    continue;
+                }
+
+                // Log the change in MiaAuditProject table
+                MiaAuditProject::create([
+                    'change_by' => Auth::check() ? Auth::user()->username : 'error_get_user',
+                    'activity'  => 'Update',
+                    'recordid'  => $model->getAuditRecordId(),
+                    'model_type' => get_class($model),
+                    'sourcetable' => $model->getTable(),
+                    'sourcefield' => $field,
+                    'beforevalue' => $oldValue,
+                    'aftervalue' => $newValue,
+                    'notes'      => $model->getAuditFieldsNotes()
+                ]);
+            }
+        });
+
+        static::deleting(function ($model) {
+            MiaAuditProject::create([
+                'change_by'   => Auth::check() ? Auth::user()->username : 'error_get_user',
+                'activity'    => 'Delete',
+                'recordid'    => $model->getAuditRecordId(),
+                'model_type'  => get_class($model),
+                'sourcetable' => $model->getTable(), // Use the model's table name
+                'sourcefield' => 'All',
+                'beforevalue' => json_encode($model->only($model->getAuditFieldsForDelete())),
+                'aftervalue'  => null,
+            ]);
+        });
+    }
+
+    // Helper method to check if an attribute is a date
+    protected function isDateAttribute($key)
+    {
+        return in_array($key, $this->getDates());
+    }
+
+    // Helper method to check if an attribute is a timestamp
+    protected function isTimestampAttribute($key)
+    {
+        return in_array($key, $this->getTimestampAttributes());
+    }
+
+    protected function getTimestampAttributes()
+    {
+        // Default timestamp attributes, can be overridden in individual models
+        return ['updated_at', 'created_at'];
+    }
+
+    // Format date for comparison
+    protected function formatDateForComparison($value)
+    {
+        return $value ? (new \DateTime($value))->format('Y-m-d') : null;
+    }
+
+    // Method to get the audit record ID, can be overridden by model
+    public function getAuditRecordId()
+    {
+        // Default to 'id' but can be overridden in individual models
+        return $this->id;
+    }
+
+    public function getAuditFieldsNotes()
+    {        
+        return $this->id;
+    }
+
+    public function getAuditFieldsForDelete()
+    {
+        // Default fields, can be overridden in individual models
+        return ['id'];
+    }
+}

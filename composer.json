@@ -1,0 +1,31 @@
+{
+    "name": "govelid/laravel-multi-auditable",
+    "description": "A Laravel package to create flexible auditable migrations and traits",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raka",
+            "email": "rakha.budiman@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "illuminate/support": "^8.0|^9.0|^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vendor\\Package\\": "src/",
+            "App\\Traits\\": "app/Traits/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vendor\\Package\\PackageServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
