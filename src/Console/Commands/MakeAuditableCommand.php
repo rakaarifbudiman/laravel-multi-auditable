@@ -36,7 +36,8 @@ class MakeAuditableCommand extends Command
         $modelFileName = $modelName . '.php';
         $modelStub = File::get(__DIR__ . '/stubs/model.stub');
         $modelStub = str_replace('DummyModel', $modelName, $modelStub);
-        $modelStub = str_replace('DummyTable', $tableName, $modelStub);
+        $modelStub = str_replace('DummyTable', $tableName, $modelStub);        
+        $traitStub = str_replace('DummyModel', $modelName, $traitStub);        
         File::put(app_path('Models/' . $modelFileName), $modelStub);
 
         $this->info("Migration created successfully: {$migrationFileName}");
