@@ -5,6 +5,7 @@ namespace Vendor\Package\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
 
 class MakeAuditableCommand extends Command
 {
@@ -39,6 +40,11 @@ class MakeAuditableCommand extends Command
         $modelStub = str_replace('DummyModel', $modelName, $modelStub);
         $modelStub = str_replace('DummyTable', $tableName, $modelStub); 
         File::put(app_path('Models/' . $modelFileName), $modelStub);
+
+        $migrationPath = database_path('migrations/' . $migrationFileName);
+
+        // Jalankan migrasi
+        Artisan::call('migrate', ['--path' => $migrationPath]);
 
         $this->info("Migration created successfully: {$migrationFileName}");
         $this->info("Trait created successfully: {$traitFileName}");
