@@ -1,6 +1,7 @@
 {
     "name": "govelid/laravel-multi-auditable",
     "description": "A Laravel package to create flexible auditable migrations and traits",
+    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "authors": [
