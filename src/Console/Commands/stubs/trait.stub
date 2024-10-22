@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Project\MiaAuditProject;
+use App\Models\Project\DummyModel;
 
 trait DummyTrait
 {
@@ -29,8 +29,8 @@ trait DummyTrait
                     continue;
                 }
 
-                // Log the change in MiaAuditProject table
-                MiaAuditProject::create([
+                // Log the change in DummyModel table
+                DummyModel::create([
                     'change_by' => Auth::check() ? Auth::user()->username : 'error_get_user',
                     'activity'  => 'Update',
                     'recordid'  => $model->getAuditRecordId(),
@@ -45,7 +45,7 @@ trait DummyTrait
         });
 
         static::deleting(function ($model) {
-            MiaAuditProject::create([
+            DummyModel::create([
                 'change_by'   => Auth::check() ? Auth::user()->username : 'error_get_user',
                 'activity'    => 'Delete',
                 'recordid'    => $model->getAuditRecordId(),

@@ -31,7 +31,16 @@ class MakeAuditableCommand extends Command
         $traitStub = str_replace('bootDummyTrait', $bootMethodName, $traitStub);
         File::put(app_path('Traits/' . $traitFileName), $traitStub);
 
+        // Create model
+        $modelName = Str::studly($name);
+        $modelFileName = $modelName . '.php';
+        $modelStub = File::get(__DIR__ . '/stubs/model.stub');
+        $modelStub = str_replace('DummyModel', $modelName, $modelStub);
+        $modelStub = str_replace('DummyTable', $tableName, $modelStub);
+        File::put(app_path('Models/' . $modelFileName), $modelStub);
+
         $this->info("Migration created successfully: {$migrationFileName}");
         $this->info("Trait created successfully: {$traitFileName}");
+        $this->info("Model created successfully: {$modelFileName}");
     }
 }
