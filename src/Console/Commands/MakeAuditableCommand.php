@@ -42,10 +42,7 @@ class MakeAuditableCommand extends Command
         File::put(app_path('Models/' . $modelFileName), $modelStub);
 
         $migrationPath = database_path('migrations/' . $migrationFileName);
-
-        // Jalankan migrasi
-        Artisan::call('migrate', ['--path' => $migrationPath]);
-
+        
         $this->info("Migration created successfully: {$migrationFileName}");
         $this->info("Trait created successfully: {$traitFileName}");
         $this->info("Model created successfully: {$modelFileName}");
