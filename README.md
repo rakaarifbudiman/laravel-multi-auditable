@@ -23,7 +23,9 @@ If you find this package useful, consider supporting its development:
    - A Trait file `ProjectAuditableTrait`.
    - A Model file `ProjectAuditable`.
 
-3. To add audit trail functionality to the `Project` model, simply include the trait:
+3. Run migration
+
+4. To add audit trail functionality to the `Project` model, simply include the trait:
    ```php
    use ProjectAuditableTrait;
    ```
