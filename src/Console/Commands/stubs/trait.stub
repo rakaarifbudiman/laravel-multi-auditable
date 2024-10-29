@@ -34,7 +34,7 @@ trait DummyTrait
 
                 // Log the change in DummyModel table
                 DummyModel::create([
-                    'change_by' => Auth::check() ? Auth::user()->username : 'error_get_user',
+                    'change_by' => Auth::check() ? Auth::user()->username ?? Auth::user()->name ?? Auth::user()->id : 'error_get_user',
                     'activity'  => 'Update',
                     'recordid'  => $model->getAuditRecordId(),
                     'model_type' => get_class($model),
@@ -49,7 +49,7 @@ trait DummyTrait
 
         static::deleting(function ($model) {
             DummyModel::create([
-                'change_by'   => Auth::check() ? Auth::user()->username : 'error_get_user',
+                'change_by' => Auth::check() ? Auth::user()->username ?? Auth::user()->name ?? Auth::user()->id : 'error_get_user',
                 'activity'    => 'Delete',
                 'recordid'    => $model->getAuditRecordId(),
                 'model_type'  => get_class($model),
