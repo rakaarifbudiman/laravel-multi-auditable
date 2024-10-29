@@ -6,12 +6,18 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Filesystem\Filesystem;
 
 class MakeAuditableCommand extends Command
 {
     protected $signature = 'make:auditable {name}';
     protected $description = 'Create an auditable migration and trait';
 
+    public function __construct(Filesystem $files)
+    {
+        parent::__construct();
+        $this->files = $files;
+    }
     public function handle()
     {
         $name = $this->argument('name');
