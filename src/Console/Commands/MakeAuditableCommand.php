@@ -42,9 +42,19 @@ class MakeAuditableCommand extends Command
         File::put(app_path('Models/' . $modelFileName), $modelStub);
 
         $migrationPath = database_path('migrations/' . $migrationFileName);
+
+        $path = app_path('Traits/AuditHelpersTrait.php');        
         
         $this->info("Migration created successfully: {$migrationFileName}");
         $this->info("Trait created successfully: {$traitFileName}");
         $this->info("Model created successfully: {$modelFileName}");
+
+        if (!$this->files->exists($path)) {
+            $stubPath = __DIR__ . '/stubs/helper-trait.stub';
+            $this->files->ensureDirectoryExists(app_path('Traits'));
+            $this->files->copy($stubPath, $path);
+
+            $this->info('AuditHelpersTrait created successfully.');
+        }
     }
 }

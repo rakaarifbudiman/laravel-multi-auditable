@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Traits;
+
+trait AuditHelpersTrait
+{
+    // Helper method to check if an attribute is a date
+    protected function isDateAttribute($key)
+    {
+        return in_array($key, $this->getDates());
+    }
+
+    // Helper method to check if an attribute is a timestamp
+    protected function isTimestampAttribute($key)
+    {
+        return in_array($key, $this->getTimestampAttributes());
+    }
+
+    protected function getTimestampAttributes()
+    {
+        // Default timestamp attributes, can be overridden in individual models
+        return ['updated_at', 'created_at'];
+    }
+
+    // Format date for comparison
+    protected function formatDateForComparison($value)
+    {
+        return $value ? (new \DateTime($value))->format('Y-m-d') : null;
+    }
+
+    // Method to get the audit record ID, can be overridden by model
+    public function getAuditRecordId()
+    {
+        // Default to 'id' but can be overridden in individual models
+        return $this->id;
+    }
+
+    public function getAuditFieldsNotes()
+    {        
+        return $this->id;
+    }
+
+    public function getAuditFieldsForDelete()
+    {
+        // Default fields, can be overridden in individual models
+        return ['id'];
+    }
+
+    protected function getAuditActivityType($value)
+    {
+        return $value ? $value : 'Update';
+    }
+}
