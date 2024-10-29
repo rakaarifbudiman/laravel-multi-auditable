@@ -35,7 +35,7 @@ trait DummyTrait
                 // Log the change in DummyModel table
                 DummyModel::create([
                     'change_by' => Auth::check() ? Auth::user()->username : 'error_get_user',
-                    'activity'  => $model->getAuditActivityType($value),
+                    'activity'  => 'Update',
                     'recordid'  => $model->getAuditRecordId(),
                     'model_type' => get_class($model),
                     'sourcetable' => $model->getTable(),

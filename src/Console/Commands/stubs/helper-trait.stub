@@ -45,9 +45,5 @@ trait AuditHelpersTrait
         // Default fields, can be overridden in individual models
         return ['id'];
     }
-
-    protected function getAuditActivityType($value)
-    {
-        return $value ? $value : 'Update';
-    }
+        
 }
