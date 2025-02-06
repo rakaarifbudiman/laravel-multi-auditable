@@ -12,11 +12,11 @@ return new class extends Migration {
             $table->string('change_by');
             $table->string('activity');
             $table->string('recordid');
-            $table->string('sourcetable');
-            $table->string('sourcefield');
-            $table->string('beforevalue');
-            $table->string('aftervalue');
-            $table->string('notes');
+            $table->string('sourcetable')->nullable();
+            $table->string('sourcefield')->nullable();
+            $table->string('beforevalue')->nullable();
+            $table->string('aftervalue')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }
