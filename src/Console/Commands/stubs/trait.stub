@@ -57,6 +57,7 @@ trait DummyTrait
                 'sourcefield' => 'All',
                 'beforevalue' => json_encode($model->only($model->getAuditFieldsForDelete())),
                 'aftervalue'  => null,
+                'notes'      => $model->getAuditFieldsNotes()
             ]);
         });
     }
